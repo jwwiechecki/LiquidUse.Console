@@ -1,6 +1,6 @@
 ﻿namespace LiquidUse.Database
 {
-    class LiquidUseCommandDbContext : LiquidUseDBContext
+    public class LiquidUseCommandDbContext : LiquidUseDBContext
     {
     }
 }
