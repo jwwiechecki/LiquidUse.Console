@@ -16,11 +16,14 @@ namespace LiquidUse.Services.Classes
         {
             _context = context;
         }
-        public IList<LiquidData> GetItems()
+        public IList<LiquidData> GetItems(DateTime? from, DateTime? to)
         {
-            var result = _context.LiquidDatas
+            DateTime dateFrom = from == null ? DateTime.MinValue : (DateTime) from;
+            DateTime dateTo = to == null ? DateTime.MaxValue : (DateTime) to;
+
+            return _context.LiquidDatas
+                .Where(x => DateTime.Compare(x.Date, dateFrom) >= 0 && DateTime.Compare(x.Date, dateTo) <= 0)
                 .ToList();
-            return result;
         }
 
         public LiquidData GetItemById(int id)
