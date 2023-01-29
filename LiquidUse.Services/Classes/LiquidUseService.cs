@@ -24,7 +24,10 @@ namespace LiquidUse.Services.Classes
 
         public LiquidData GetItemById(int id)
         {
-            throw new NotImplementedException();
+            var result = _context.LiquidDatas
+                .Where(x => x.Id == id)
+                .FirstOrDefault();
+            return result;
         }
     }
 }
