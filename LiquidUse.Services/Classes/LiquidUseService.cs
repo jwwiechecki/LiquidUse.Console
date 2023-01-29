@@ -1,8 +1,8 @@
 ﻿using LiquidUse.Database;
 using LiquidUse.Database.Model;
 using LiquidUse.Services.Interfaces;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LiquidUse.Services.Classes
 {
@@ -16,7 +16,9 @@ namespace LiquidUse.Services.Classes
         }
         public IList<LiquidData> GetLiquidDataItems()
         {
-            throw new NotImplementedException();
+            var result = _context.LiquidDatas
+                .ToList();
+            return result;
         }
     }
 }

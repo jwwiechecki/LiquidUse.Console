@@ -25,6 +25,9 @@ namespace LiquidUse.Services.Tests
             }.AsQueryable();
 
             var mocLiquidDataSet = new Mock<DbSet<LiquidData>>();
+            mocLiquidDataSet.As<IQueryable<LiquidData>>().Setup(m => m.Provider).Returns(data.Provider);
+            mocLiquidDataSet.As<IQueryable<LiquidData>>().Setup(m => m.Expression).Returns(data.Expression);
+            mocLiquidDataSet.As<IQueryable<LiquidData>>().Setup(m => m.ElementType).Returns(data.ElementType);
             mocLiquidDataSet.As<IQueryable<LiquidData>>().Setup(x => x.GetEnumerator()).Returns(() => data.GetEnumerator());
 
             var mockContext = new Mock<LiquidUseQueryDbContext>();
