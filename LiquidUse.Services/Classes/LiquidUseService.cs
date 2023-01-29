@@ -33,7 +33,10 @@ namespace LiquidUse.Services.Classes
 
         public IList<LiquidData> GetItemsByKind(KindEnum kindEnum)
         {
-            throw new NotImplementedException();
+            var result = _context.LiquidDatas
+                .Where(x => x.Kind == kindEnum)
+                .ToList();
+            return result;
         }
 
     }
