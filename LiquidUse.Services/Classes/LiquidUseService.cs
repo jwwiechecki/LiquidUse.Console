@@ -1,4 +1,5 @@
-﻿using LiquidUse.Database;
+﻿using LiquidUse.Common.Enums;
+using LiquidUse.Database;
 using LiquidUse.Database.Model;
 using LiquidUse.Services.Interfaces;
 using System;
@@ -29,5 +30,11 @@ namespace LiquidUse.Services.Classes
                 .FirstOrDefault();
             return result;
         }
+
+        public IList<LiquidData> GetItemsByKind(KindEnum kindEnum)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }
