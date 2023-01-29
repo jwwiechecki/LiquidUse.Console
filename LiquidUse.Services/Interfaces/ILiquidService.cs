@@ -5,6 +5,6 @@ namespace LiquidUse.Services.Interfaces
 {
     public interface ILiquidService
     {
-        IList<LiquidData> GetLiquidDataItems();
+        IList<LiquidData> GetItems();
     }
 }

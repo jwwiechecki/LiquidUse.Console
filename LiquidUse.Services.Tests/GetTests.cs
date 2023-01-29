@@ -37,7 +37,7 @@ namespace LiquidUse.Services.Tests
             var service = new LiquidUseService(mockContext.Object);
 
             //Act
-            var items = service.GetLiquidDataItems();
+            var items = service.GetItems();
 
             //Assert
             Assert.AreEqual(3, items.Count);
