@@ -6,7 +6,7 @@ namespace LiquidUse.Services.Interfaces
 {
     public interface ILiquidUseService
     {
-        IList<LiquidData> GetItems();
+        IList<LiquidData> GetItems(DateTime? from, DateTime? to);
         LiquidData GetItemById(int id);
         IList<LiquidData> GetItemsByKind(KindEnum kindEnum);
     }
