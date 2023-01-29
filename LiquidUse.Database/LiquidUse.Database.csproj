@@ -12,4 +12,8 @@
     <ProjectReference Include="..\LiquidUse.Common\LiquidUse.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Model\Interfaces\" />
+  </ItemGroup>
+
 </Project>
