@@ -16,7 +16,7 @@ namespace LiquidUse.Services.Classes
         {
             _context = context;
         }
-        public IList<LiquidData> GetItems()
+        public IList<LiquidData> GetItems(DateTime? from, DateTime? to)
         {
             var result = _context.LiquidDatas
                 .ToList();

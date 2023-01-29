@@ -14,14 +14,20 @@ namespace LiquidUse.Services.Tests
     public class GetTests
     {
         [Test]
-        public void Get_LiquidDataItems_ReturnAllItems()
+        [TestCase(null, null, 3)]
+        [TestCase("2022-12-20", null, 4)]
+        [TestCase(null, "2023-01-31", 4)]
+        [TestCase("2022-12-20", "2023-01-31", 4)]
+        [TestCase("2022-01-17", "2023-01-20", 2)]
+        public void Get_LiquidDataItems_ReturnAllItems(DateTime? from, DateTime? to, int expected)
         {
             //Arange
             var data = new List<LiquidData>()
             {
-                new LiquidData(){Id = 1, Date = DateTime.Now, Kind = KindEnum.Tea, Use = 0.250M},
-                new LiquidData(){Id = 2, Date = DateTime.Now, Kind = KindEnum.Coffe, Use = 0.250M},
-                new LiquidData(){Id = 3, Date = DateTime.Now, Kind = KindEnum.Pepsi, Use = 0.5M}
+                new LiquidData(){Id = 1, Date = new DateTime(2022,12,31), Kind = KindEnum.Tea, Use = 0.250M},
+                new LiquidData(){Id = 2, Date = new DateTime(2023,1,18), Kind = KindEnum.Coffe, Use = 0.250M},
+                new LiquidData(){Id = 3, Date = new DateTime(2022,1,19), Kind = KindEnum.Pepsi, Use = 0.5M},
+                new LiquidData(){Id = 3, Date = new DateTime(2022,1,23), Kind = KindEnum.Coffe, Use = 0.5M}
             }.AsQueryable();
 
             var mocLiquidDataSet = new Mock<DbSet<LiquidData>>();
@@ -37,10 +43,10 @@ namespace LiquidUse.Services.Tests
             var service = new LiquidUseService(mockContext.Object);
 
             //Act
-            var items = service.GetItems();
+            var items = service.GetItems(from, to);
 
             //Assert
-            Assert.AreEqual(3, items.Count);
+            Assert.AreEqual(expected, items.Count);
         }
 
         [Test]
