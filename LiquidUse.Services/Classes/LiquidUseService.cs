@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace LiquidUse.Services.Classes
 {
-    public class LiquidUseService : ILiquidService
+    public class LiquidUseService : ILiquidUseService
     {
         private readonly LiquidUseQueryDbContext _context;
 

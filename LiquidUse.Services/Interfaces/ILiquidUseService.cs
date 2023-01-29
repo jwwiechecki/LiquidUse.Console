@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace LiquidUse.Services.Interfaces
 {
-    public interface ILiquidService
+    public interface ILiquidUseService
     {
         IList<LiquidData> GetItems();
     }
