@@ -44,5 +44,9 @@ namespace LiquidUse.Services.Classes
                 .ToList();
         }
 
+        public void DeleteItem(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

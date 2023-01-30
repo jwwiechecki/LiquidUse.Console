@@ -176,5 +176,35 @@ namespace LiquidUse.Services.Tests
             //Assert
             Assert.AreEqual(expected, items.Count);
         }
+        
+        [Test]
+        public void DeleteItem_ReturnVoid()
+        {
+            var data = new List<LiquidData>()
+            {
+                new LiquidData(){Id = 1, Date = new DateTime(2022,12,31), Kind = KindEnum.Tea, Use = 0.250M},
+                new LiquidData(){Id = 2, Date = new DateTime(2023,1,18), Kind = KindEnum.CocaCola, Use = 0.250M},
+                new LiquidData(){Id = 3, Date = new DateTime(2023,1,19), Kind = KindEnum.Coffe, Use = 0.5M},
+                new LiquidData(){Id = 3, Date = new DateTime(2023,1,23), Kind = KindEnum.SparklingWater, Use = 0.5M}
+            }.AsQueryable();
+
+            var mocLiquidDataSet = new Mock<DbSet<LiquidData>>();
+            mocLiquidDataSet.As<IQueryable<LiquidData>>().Setup(m => m.Provider).Returns(data.Provider);
+            mocLiquidDataSet.As<IQueryable<LiquidData>>().Setup(m => m.Expression).Returns(data.Expression);
+            mocLiquidDataSet.As<IQueryable<LiquidData>>().Setup(m => m.ElementType).Returns(data.ElementType);
+            mocLiquidDataSet.As<IQueryable<LiquidData>>().Setup(x => x.GetEnumerator()).Returns(() => data.GetEnumerator());
+
+            var mockContext = new Mock<LiquidUseQueryDbContext>();
+
+            mockContext.Setup(m => m.LiquidDatas).Returns(mocLiquidDataSet.Object);
+
+            var service = new LiquidUseService(mockContext.Object);
+
+            //Act
+            service.DeleteItem(3);
+
+            //Assert
+            Assert.AreEqual(3, data.ToList().Count);
+        }
     }
 }
