@@ -108,14 +108,19 @@ namespace LiquidUse.Services.Tests
         }
 
         [Test]
-        public void GetLiquidDataItemByKindEnum_ReturnItemWithGivenId()
+        [TestCase(null, null, 3)]
+        [TestCase("2022-12-20", null, 3)]
+        [TestCase(null, "2023-01-31", 3)]
+        [TestCase("2022-12-20", "2023-01-31", 3)]
+        [TestCase("2023-01-17", "2023-01-20", 2)]
+        public void GetLiquidDataItemByKindEnum_ReturnItemWithGivenId(DateTime? from, DateTime? to, int expected)
         {
             var data = new List<LiquidData>()
             {
-                new LiquidData(){Id = 1, Date = DateTime.Now, Kind = KindEnum.Tea, Use = 0.250M},
-                new LiquidData(){Id = 2, Date = DateTime.Now, Kind = KindEnum.Coffe, Use = 0.250M},
-                new LiquidData(){Id = 3, Date = DateTime.Now, Kind = KindEnum.Pepsi, Use = 0.5M},
-                new LiquidData(){Id = 4, Date = DateTime.Now, Kind = KindEnum.Coffe, Use = 0.5M}
+                new LiquidData(){Id = 1, Date = new DateTime(2022,12,31), Kind = KindEnum.Tea, Use = 0.250M},
+                new LiquidData(){Id = 2, Date = new DateTime(2023,1,18), Kind = KindEnum.Coffe, Use = 0.250M},
+                new LiquidData(){Id = 3, Date = new DateTime(2023,1,19), Kind = KindEnum.Coffe, Use = 0.5M},
+                new LiquidData(){Id = 3, Date = new DateTime(2023,1,23), Kind = KindEnum.Coffe, Use = 0.5M}
             }.AsQueryable();
 
             var mocLiquidDataSet = new Mock<DbSet<LiquidData>>();
@@ -131,21 +136,26 @@ namespace LiquidUse.Services.Tests
             var service = new LiquidUseService(mockContext.Object);
 
             //Act
-            var items = service.GetItemsByKind(KindEnum.Coffe);
+            var items = service.GetItemsByKind(KindEnum.Coffe, from, to);
 
             //Assert
-            Assert.AreEqual(2, items.Count);
+            Assert.AreEqual(expected, items.Count);
         }
 
         [Test]
-        public void GetLiquidDataItemByNoExistingItemKindInDb_RetunZero()
+        [TestCase(null, null, 0)]
+        [TestCase("2022-12-20", null, 0)]
+        [TestCase(null, "2023-01-31", 0)]
+        [TestCase("2022-12-20", "2023-01-31", 0)]
+        [TestCase("2023-01-17", "2023-01-20", 0)]
+        public void GetLiquidDataItemByNoExistingItemKindInDb_RetunZero(DateTime? from, DateTime? to, int expected)
         {
             var data = new List<LiquidData>()
             {
-                new LiquidData(){Id = 1, Date = DateTime.Now, Kind = KindEnum.Tea, Use = 0.250M},
-                new LiquidData(){Id = 2, Date = DateTime.Now, Kind = KindEnum.Coffe, Use = 0.250M},
-                new LiquidData(){Id = 3, Date = DateTime.Now, Kind = KindEnum.Pepsi, Use = 0.5M},
-                new LiquidData(){Id = 4, Date = DateTime.Now, Kind = KindEnum.Coffe, Use = 0.5M}
+                new LiquidData(){Id = 1, Date = new DateTime(2022,12,31), Kind = KindEnum.Tea, Use = 0.250M},
+                new LiquidData(){Id = 2, Date = new DateTime(2023,1,18), Kind = KindEnum.Coffe, Use = 0.250M},
+                new LiquidData(){Id = 3, Date = new DateTime(2023,1,19), Kind = KindEnum.Coffe, Use = 0.5M},
+                new LiquidData(){Id = 3, Date = new DateTime(2023,1,23), Kind = KindEnum.Coffe, Use = 0.5M}
             }.AsQueryable();
 
             var mocLiquidDataSet = new Mock<DbSet<LiquidData>>();
@@ -161,10 +171,10 @@ namespace LiquidUse.Services.Tests
             var service = new LiquidUseService(mockContext.Object);
 
             //Act
-            var items = service.GetItemsByKind(KindEnum.Dinner);
+            var items = service.GetItemsByKind(KindEnum.Dinner, from, to);
 
             //Assert
-            Assert.AreEqual(0, items.Count);
+            Assert.AreEqual(expected, items.Count);
         }
     }
 }

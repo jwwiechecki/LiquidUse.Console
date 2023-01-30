@@ -34,7 +34,7 @@ namespace LiquidUse.Services.Classes
             return result;
         }
 
-        public IList<LiquidData> GetItemsByKind(KindEnum kindEnum)
+        public IList<LiquidData> GetItemsByKind(KindEnum kindEnum, DateTime? from, DateTime? to)
         {
             var result = _context.LiquidDatas
                 .Where(x => x.Kind == kindEnum)
