@@ -39,10 +39,9 @@ namespace LiquidUse.Services.Classes
             DateTime dateFrom = from == null ? DateTime.MinValue : (DateTime)from;
             DateTime dateTo = to == null ? DateTime.MaxValue : (DateTime)to;
 
-            var result = _context.LiquidDatas
+            return _context.LiquidDatas
                 .Where(x => x.Kind == kindEnum && DateTime.Compare(x.Date, dateFrom) >= 0 && DateTime.Compare(x.Date, dateTo) <= 0)
                 .ToList();
-            return result;
         }
 
     }
