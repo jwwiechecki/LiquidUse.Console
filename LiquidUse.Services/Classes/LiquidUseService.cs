@@ -34,12 +34,14 @@ namespace LiquidUse.Services.Classes
             return result;
         }
 
-        public IList<LiquidData> GetItemsByKind(KindEnum kindEnum)
+        public IList<LiquidData> GetItemsByKind(KindEnum kindEnum, DateTime? from, DateTime? to)
         {
-            var result = _context.LiquidDatas
-                .Where(x => x.Kind == kindEnum)
+            DateTime dateFrom = from == null ? DateTime.MinValue : (DateTime)from;
+            DateTime dateTo = to == null ? DateTime.MaxValue : (DateTime)to;
+
+            return _context.LiquidDatas
+                .Where(x => x.Kind == kindEnum && DateTime.Compare(x.Date, dateFrom) >= 0 && DateTime.Compare(x.Date, dateTo) <= 0)
                 .ToList();
-            return result;
         }
 
     }
