@@ -120,7 +120,7 @@ namespace LiquidUse.Services.Tests
                 new LiquidData(){Id = 1, Date = new DateTime(2022,12,31), Kind = KindEnum.Tea, Use = 0.250M},
                 new LiquidData(){Id = 2, Date = new DateTime(2023,1,18), Kind = KindEnum.Coffe, Use = 0.250M},
                 new LiquidData(){Id = 3, Date = new DateTime(2023,1,19), Kind = KindEnum.Coffe, Use = 0.5M},
-                new LiquidData(){Id = 3, Date = new DateTime(2023,1,23), Kind = KindEnum.Coffe, Use = 0.5M}
+                new LiquidData(){Id = 4, Date = new DateTime(2023,1,23), Kind = KindEnum.Coffe, Use = 0.5M}
             }.AsQueryable();
 
             var mocLiquidDataSet = new Mock<DbSet<LiquidData>>();
@@ -155,7 +155,7 @@ namespace LiquidUse.Services.Tests
                 new LiquidData(){Id = 1, Date = new DateTime(2022,12,31), Kind = KindEnum.Tea, Use = 0.250M},
                 new LiquidData(){Id = 2, Date = new DateTime(2023,1,18), Kind = KindEnum.Coffe, Use = 0.250M},
                 new LiquidData(){Id = 3, Date = new DateTime(2023,1,19), Kind = KindEnum.Coffe, Use = 0.5M},
-                new LiquidData(){Id = 3, Date = new DateTime(2023,1,23), Kind = KindEnum.Coffe, Use = 0.5M}
+                new LiquidData(){Id = 4, Date = new DateTime(2023,1,23), Kind = KindEnum.Coffe, Use = 0.5M}
             }.AsQueryable();
 
             var mocLiquidDataSet = new Mock<DbSet<LiquidData>>();
@@ -185,14 +185,15 @@ namespace LiquidUse.Services.Tests
                 new LiquidData(){Id = 1, Date = new DateTime(2022,12,31), Kind = KindEnum.Tea, Use = 0.250M},
                 new LiquidData(){Id = 2, Date = new DateTime(2023,1,18), Kind = KindEnum.CocaCola, Use = 0.250M},
                 new LiquidData(){Id = 3, Date = new DateTime(2023,1,19), Kind = KindEnum.Coffe, Use = 0.5M},
-                new LiquidData(){Id = 3, Date = new DateTime(2023,1,23), Kind = KindEnum.SparklingWater, Use = 0.5M}
-            }.AsQueryable();
+                new LiquidData(){Id = 4, Date = new DateTime(2023,1,23), Kind = KindEnum.SparklingWater, Use = 0.5M}
+            };
 
             var mocLiquidDataSet = new Mock<DbSet<LiquidData>>();
-            mocLiquidDataSet.As<IQueryable<LiquidData>>().Setup(m => m.Provider).Returns(data.Provider);
-            mocLiquidDataSet.As<IQueryable<LiquidData>>().Setup(m => m.Expression).Returns(data.Expression);
-            mocLiquidDataSet.As<IQueryable<LiquidData>>().Setup(m => m.ElementType).Returns(data.ElementType);
+            mocLiquidDataSet.As<IQueryable<LiquidData>>().Setup(m => m.Provider).Returns(data.AsQueryable().Provider);
+            mocLiquidDataSet.As<IQueryable<LiquidData>>().Setup(m => m.Expression).Returns(data.AsQueryable().Expression);
+            mocLiquidDataSet.As<IQueryable<LiquidData>>().Setup(m => m.ElementType).Returns(data.AsQueryable().ElementType);
             mocLiquidDataSet.As<IQueryable<LiquidData>>().Setup(x => x.GetEnumerator()).Returns(() => data.GetEnumerator());
+            mocLiquidDataSet.Setup(m => m.Remove(It.IsAny<LiquidData>())).Callback<LiquidData>((entity) => data.Remove(entity));
 
             var mockContext = new Mock<LiquidUseQueryDbContext>();
 
@@ -204,7 +205,7 @@ namespace LiquidUse.Services.Tests
             service.DeleteItem(3);
 
             //Assert
-            Assert.AreEqual(3, data.ToList().Count);
+            Assert.AreEqual(3, data.Count);
         }
     }
 }
