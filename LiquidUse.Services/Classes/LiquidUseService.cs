@@ -2,6 +2,7 @@
 using LiquidUse.Database;
 using LiquidUse.Database.Model;
 using LiquidUse.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,5 +45,15 @@ namespace LiquidUse.Services.Classes
                 .ToList();
         }
 
+        public void DeleteItem(int id)
+        {
+            //LiquidData item = new LiquidData() { Id = id };
+            //_context.LiquidDatas.Attach(item);
+            var item = _context.LiquidDatas.Where(x => x.Id == id).FirstOrDefault();
+            if (item == default) return;
+            //_context.Entry(item).State = EntityState.Modified; //ToDo Dowiedzieć się dlaczego nie można zmockować Entry(item)
+            _context.LiquidDatas.Remove(item);
+            _context.SaveChanges();
+        }
     }
 }
